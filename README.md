@@ -55,4 +55,11 @@ yarn install
 
 # Iniciar Vu
 yarn run dev
+
+# variavel de ambiente
+cp .env.example .env
+
+# adicionar endereço da API em .env (exemplo)
+# VITE_API_URL=http://localhost:8000/api
+
 ```
