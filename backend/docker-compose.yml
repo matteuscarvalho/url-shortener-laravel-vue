@@ -1,0 +1,62 @@
+version: "3.7"
+
+services:
+    # image project
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+        networks:
+            - laravel
+
+    # nginx
+    nginx:
+        image: nginx:alpine
+        restart: unless-stopped
+        ports:
+            - "9000:80"
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx/:/etc/nginx/conf.d/
+        networks:
+            - laravel
+
+    # db mysql
+    db:
+        image: mysql:5.7.22
+        platform: linux/x86_64
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE:-laravel}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+            MYSQL_PASSWORD: ${DB_PASSWORD:-userpass}
+            MYSQL_USER: ${DB_USERNAME:-username}
+        volumes:
+            - ./docker/mysql/dbdata:/var/lib/mysql
+        ports:
+            - "3388:3306"
+        networks:
+            - laravel
+
+    # panel phpmyadmin
+    phpmyadmin:
+        image: phpmyadmin
+        restart: always
+        ports:
+            - 9001:80
+        environment:
+            PHP_DATE_TIMEZONE: UTC
+            PHP_DISPLAY_ERRORS: 1
+            PHP_MEMORY_LIMIT: 2048M
+            PHP_MAX_EXECUTION_TIME: 6000
+        networks:
+            - laravel
+        depends_on:
+            - db
+networks:
+    laravel:
+        driver: bridge
