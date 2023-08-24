@@ -196,5 +196,25 @@ const handleSearch = debounce(async () => {
     overflow: hidden;
     cursor: pointer;
   }
+
+  @media screen and (max-width: 768px) {
+    &__content {
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    &__content > div:nth-child(2) {
+      order: 3;
+      width: 100%;
+    }
+
+    &__search {
+      width: 100%;
+
+      input {
+        width: 100%;
+      }
+    }
+  }
 }
 </style>
