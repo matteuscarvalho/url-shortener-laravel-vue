@@ -118,6 +118,13 @@ const modalSizeClass = computed(() => `modal-${props.size}`);
   .close-modal svg:hover {
     fill: #324355;
   }
+
+
+  @media screen and (max-width: 768px) {
+    .modal-content {
+      width: 80%;
+    }
+  }
 }
 
 .modal-animation-enter-active,
